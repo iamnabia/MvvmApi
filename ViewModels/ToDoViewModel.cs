@@ -1,26 +1,33 @@
-﻿using Microsoft.Maui.Controls;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using MVVM_API_SampleProject.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Collections.ObjectModel;
+using System.Diagnostics;
+using System.Text.Json;
+using System.Windows.Input;
 
-namespace MVVM_API_SampleProject.ViewModels
+
+namespace MVVM_API_SampleProject.ViewModels;
+
+internal partial class ToDoViewModel : ObservableObject, IDisposable
 {
-    public class ToDoViewModel
-    {
-        public ToDo ToDo {  get; set; }
+    private readonly HttpClient _client;
 
-        public ToDoViewModel()
-        {
-            ToDo = new ToDo()
-            {
-                UserId= 1,
-                Id= 1,
-                Title = "Ana, Edu e Lucas",
-                Completed = true
-            };
-        }
+    private readonly JsonSerializerOptions _serializerOptions;
+    private readonly string _baseUrl = "https://jsonplaceholder.typicode.com";
+
+    [ObservableProperty]
+    public int _UserOd;
+    [ObservableProperty]
+    public int _Id;
+    [ObservableProperty]
+    public string _Title;
+    [ObservableProperty]
+    public string _Body;
+
+    public ObservableCollection<Post> Posts;
+
+    public void Dispose()
+    {
+        throw new NotImplementedException();
     }
 }

@@ -9,7 +9,7 @@ namespace MVVM_API_SampleProject
         {
             InitializeComponent();
 
-            MainPage = new ToDoView();
+            MainPage = new PostView();
         }
     }
 }
