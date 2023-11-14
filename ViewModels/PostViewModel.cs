@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using MVVM_API_SampleProject.Models;
+using MVVM_API_SampleProject.Services;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Text.Json;
@@ -8,10 +9,7 @@ using System.Windows.Input;
 namespace MVVM_API_SampleProject.ViewModels;
 internal partial class PostViewModel : ObservableObject, IDisposable
 {
-    private readonly HttpClient _client;
-
-    private readonly JsonSerializerOptions _serializerOptions;
-    private readonly string _baseUrl = "https://jsonplaceholder.typicode.com";
+    private readonly PostService _postService;
 
     [ObservableProperty]
     public int _UserOd;
@@ -26,31 +24,15 @@ internal partial class PostViewModel : ObservableObject, IDisposable
 
     public PostViewModel()
     {
-        _client = new HttpClient();
         Posts = new ObservableCollection<Post>();
-        _serializerOptions = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+        _postService = new PostService();
     }
 
     public ICommand GetPostsCommand => new Command(async () => await LoadPostsAsync());
 
     private async Task LoadPostsAsync()
     {
-        var url = $"{_baseUrl}/posts";
-        try
-        {
-            var response = await _client.GetAsync(url);
-            if (response.IsSuccessStatusCode)
-            {
-                string content = await response.Content.ReadAsStringAsync();
-                Posts = JsonSerializer.Deserialize<ObservableCollection<Post>>(content, _serializerOptions);
-
-
-            }
-        }
-        catch (Exception e)
-        {
-            Debug.WriteLine(e.Message);
-        }
+        Posts = await _postService.GetPostsAsync();
     }
 
     public void Dispose()
