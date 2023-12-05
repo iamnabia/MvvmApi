@@ -7,10 +7,8 @@ public partial class ToDoView : ContentPage
 {
 	public ToDoView()
 	{
-		InitializeComponent();
+        InitializeComponent();
 		BindingContext = new ToDoViewModel();
-
-
 	}
 
 }
